@@ -22,7 +22,7 @@ class DummyHyperHeuristic(HyperHeuristic):
             # random.seed(args[3])
             self.conditions = []
             self.actions = []
-            self.fitness = 0
+            self.fitness = 1
             self.problem = FFP(args[4])
             for i in range(args[2]):
                 self.conditions.append([0] * len(args[0]))
@@ -35,8 +35,8 @@ class DummyHyperHeuristic(HyperHeuristic):
         elif len(args) == 4:
             self.conditions = []
             self.actions = []
-            self.fitness = 0
-            self.problem = args[3]
+            self.fitness = 1
+            self.problem = FFP(args[3])
             for i in range(args[2]):
                 self.conditions.append([0] * len(args[0]))
                 if i < args[2] // 2:

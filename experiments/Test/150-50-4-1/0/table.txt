@@ -1,0 +1,3 @@
+Instance: D:\Documents\GitHub\FFPHHS\instances\Test\1000_ep0.0075_0_gilbert_1.in
+Generation: 1
+0.99400

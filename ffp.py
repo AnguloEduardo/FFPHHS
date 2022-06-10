@@ -1,5 +1,4 @@
-from HH import *
-t = 0
+from HH import HyperHeuristic
 
 
 # Provides the methods to create and solve the firefighter problem
@@ -38,53 +37,53 @@ class FFP:
     #   nbFighters = The number of available firefighters per turn
     #   debug = A flag to indicate if debugging messages are shown or not
     def solve(self, method, nbFighters, debug=False):
-        global t
         spreading = True
         if debug:
             print("Initial state:" + str(self.state))
         t = 0
-        if debug:
-            print("Features")
-            print("")
-            print("Graph density: %1.4f" % (self.getFeature("EDGE_DENSITY")))
-            print("Average degree: %1.4f" % (self.getFeature("AVG_DEGREE")))
-            print("Burning nodes: %1.4f" % self.getFeature("BURNING_NODES"))
-            print("Burning edges: %1.4f" % self.getFeature("BURNING_EDGES"))
-            print("Nodes in danger: %1.4f" % self.getFeature("NODES_IN_DANGER"))
-        # It protects the nodes (based on the number of available firefighters)
-        for i in range(nbFighters):
-            heuristic = method
-            if isinstance(method, HyperHeuristic):
-                heuristic = method.nextHeuristic(self)
-            node = self.__nextNode(heuristic)
-            if node >= 0:
-                # The node is protected
-                self.state[node] = 1
-                # The node is disconnected from the rest of the graph
-                for j in range(len(self.graph[node])):
-                    self.graph[node][j] = 0
-                    self.graph[j][node] = 0
-                if debug:
-                    print("\tt" + str(t) + ": A firefighter protects node " + str(node))
-                    # It spreads the fire among the unprotected nodes
-        spreading = False
-        state = self.state.copy()
-        for i in range(len(state)):
-            # If the node is on fire, the fire propagates among its neighbors
-            if state[i] == -1:
-                for j in range(len(self.graph[i])):
-                    if self.graph[i][j] == 1 and state[j] == 0:
-                        spreading = True
-                        # The neighbor is also on fire
-                        self.state[j] = -1
-                        # The edge between the nodes is removed (it will no longer be used)
-                        self.graph[i][j] = 0
-                        self.graph[j][i] = 0
-                        if debug:
-                            print("\tt" + str(t) + ": Fire spreads to node " + str(j))
-        t = t + 1
-        if debug:
-            print("---------------")
+        while spreading:
+            if debug:
+                print("Features")
+                print("")
+                print("Graph density: %1.4f" % (self.getFeature("EDGE_DENSITY")))
+                print("Average degree: %1.4f" % (self.getFeature("AVG_DEGREE")))
+                print("Burning nodes: %1.4f" % self.getFeature("BURNING_NODES"))
+                print("Burning edges: %1.4f" % self.getFeature("BURNING_EDGES"))
+                print("Nodes in danger: %1.4f" % self.getFeature("NODES_IN_DANGER"))
+            # It protects the nodes (based on the number of available firefighters)
+            for i in range(nbFighters):
+                heuristic = method
+                if isinstance(method, HyperHeuristic):
+                    heuristic = method.nextHeuristic(self)
+                node = self.__nextNode(heuristic)
+                if node >= 0:
+                    # The node is protected
+                    self.state[node] = 1
+                    # The node is disconnected from the rest of the graph
+                    for j in range(len(self.graph[node])):
+                        self.graph[node][j] = 0
+                        self.graph[j][node] = 0
+                    if debug:
+                        print("\tt" + str(t) + ": A firefighter protects node " + str(node))
+                        # It spreads the fire among the unprotected nodes
+            spreading = False
+            state = self.state.copy()
+            for i in range(len(state)):
+                # If the node is on fire, the fire propagates among its neighbors
+                if state[i] == -1:
+                    for j in range(len(self.graph[i])):
+                        if self.graph[i][j] == 1 and state[j] == 0:
+                            spreading = True
+                            # The neighbor is also on fire
+                            self.state[j] = -1
+                            # The edge between the nodes is removed (it will no longer be used)
+                            self.graph[i][j] = 0
+                            self.graph[j][i] = 0
+                            if debug:
+                                print("\tt" + str(t) + ": Fire spreads to node " + str(j))
+            t = t + 1
+            if debug:
+                print("---------------")
         if debug:
             print("Final state: " + str(self.state))
             print("Solution evaluation: " + str(self.getFeature("BURNING_NODES")))
