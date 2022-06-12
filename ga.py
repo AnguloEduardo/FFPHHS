@@ -179,5 +179,3 @@ def geneticAlgorithm(tournament, parents, exchange, islands, population, size, g
 
             table.close()
             table = open(folder_path + '\\' + 'table.txt', 'a')
-
-    return best

@@ -43,6 +43,11 @@ class DummyHyperHeuristic(HyperHeuristic):
                     self.actions.append(args[1][0])
                 else:
                     self.actions.append(args[1][1])
+        elif len(args) == 6:
+            self.conditions = args[2]
+            self.actions = args[3]
+            self.fitness = 1
+            self.problem = 0
 
     # Returns the next heuristic to use
     # problem = The FFP instance being solved
