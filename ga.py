@@ -1,4 +1,6 @@
 # Libraries
+import random
+
 from tqdm import tqdm
 from numpy.random import randint
 from numpy import concatenate
@@ -45,7 +47,7 @@ def crossover(parentA, parentB, crossover_prob, len_features, len_heuristics, nr
                     rule_a = param_feature_a[split:]
                     rule_b = param_feature_b[split:]
                 child_a = concatenate((rule_a[:index], rule_b[index:])).tolist()
-                child_b = concatenate((rule_a[index:], rule_b[:index])).tolist()
+                child_b = concatenate((rule_b[index:], rule_a[:index])).tolist()
                 child_a_temp = concatenate((child_a_temp, child_a)).tolist()
                 child_b_temp = concatenate((child_b_temp, child_b)).tolist()
         for x in range(nrules):
@@ -92,7 +94,10 @@ def mutate(individual, mRate, nrules, len_features):
         i, j = random.sample(range(nrules), 2)
         rule_i, rule_j = individual.conditions[i], individual.conditions[j]
         for x in range(len_features):
-            rule_i[x], rule_j[x] = rule_i[x] + 0.015, rule_j[x] + 0.015
+            if random.random() <= 0.50:
+                rule_i[x], rule_j[x] = rule_i[x] + 0.015, rule_j[x] + 0.015
+            else:
+                rule_i[x], rule_j[x] = rule_i[x] - 0.015, rule_j[x] - 0.015
         return individual, True
     return individual, False
 

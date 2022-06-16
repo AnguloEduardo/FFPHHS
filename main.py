@@ -1,6 +1,7 @@
 from ga import *
 from hhs import read_hh
 from graphs import graph
+from graphs import first_column
 import os
 
 # Variables
@@ -92,4 +93,6 @@ if heuristic:
         results.write("\n")
     results.close()
 
-graph(instance, number_firefighters, run_times, number_islands, len(heuristics), file_path)
+# graph(instance, number_firefighters, run_times, number_islands, len(heuristics), file_path)
+
+first_column(instance, number_firefighters, run_times, number_islands, len(heuristics), file_path)
